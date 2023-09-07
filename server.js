@@ -1,6 +1,9 @@
+require('dotenv').config();
 const express = require("express");
 const cors = require("cors");
 const dbConfig = require("./app/config/db.config");
+
+const mongo_db = dbConfig.MONGO_URI;
 
 const app = express();
 
@@ -20,7 +23,8 @@ const db = require("./app/models");
 const Role = db.role;
 
 db.mongoose
-  .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
+  // .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
+    .connect(mongo_db, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })

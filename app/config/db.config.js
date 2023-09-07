@@ -1,5 +1,3 @@
 module.exports = {
-  HOST: "0.0.0.0",
-  PORT: 27017,
-  DB: "jwt_examples"
+  MONGO_URI: process.env.MONGO_URI || `mongodb://0.0.0.0:27017/jwt_examples`
 };
