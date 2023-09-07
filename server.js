@@ -8,7 +8,7 @@ const mongo_db = dbConfig.MONGO_URI;
 const app = express();
 
 var corsOptions = {
-  origin: "http://localhost:8081"
+  origin: "http://125.235.232.75:8081"
 };
 
 app.use(cors(corsOptions));
