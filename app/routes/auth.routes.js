@@ -23,3 +23,5 @@ module.exports = function() {
 
   app.post("/auth/signin", controller.signin);
 };
+
+module.exports = {app}
