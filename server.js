@@ -8,7 +8,8 @@ const mongo_db = dbConfig.MONGO_URI;
 const app = express();
 
 var corsOptions = {
-  origin: "https://server-jwt-login.vercel.app"
+  origin: "https://server-jwt-login.vercel.app",
+  credentials: true,
 };
 
 app.use(cors(corsOptions));
