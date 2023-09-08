@@ -1,36 +1,37 @@
 const config = require("../config/auth.config");
 const db = require("../models");
-const {user: User, role: Role} = db
+const User = db.user;
+const Role = db.role;
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
-const signup = async (req, res) => {
+const signup = (req, res) => {
   const user = new User({
     username: req.body.username,
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8)
   });
 
-  await user.save(async (err, user) => {
+  user.save((err, user) => {
     if (err) {
       res.status(500).send({ message: err });
       return;
     }
 
     if (req.body.roles) {
-      await Role.find(
+      Role.find(
         {
           name: { $in: req.body.roles }
         },
-        async (err, roles) => {
+        (err, roles) => {
           if (err) {
             res.status(500).send({ message: err });
             return;
           }
 
           user.roles = roles.map(role => role._id);
-          await user.save(err => {
+          user.save(err => {
             if (err) {
               res.status(500).send({ message: err });
               return;
@@ -41,10 +42,14 @@ const signup = async (req, res) => {
         }
       );
     } else {
-      await Role.findOne({ name: "user" }).then( async (role) => {
+      Role.findOne({ name: "user" }, (err, role) => {
+        if (err) {
+          res.status(500).send({ message: err });
+          return;
+        }
 
         user.roles = [role._id];
-        await user.save(err => {
+        user.save(err => {
           if (err) {
             res.status(500).send({ message: err });
             return;
@@ -52,19 +57,21 @@ const signup = async (req, res) => {
 
           res.send({ message: "User was registered successfully!" });
         });
-      }).catch(function (err) {
-        res.status(500).send({ message: err});
-      })
+      });
     }
   });
 };
 
-const signin = async (req, res) => {
-  await User.findOne({
+const signin = (req, res) => {
+  User.findOne({
     username: req.body.username
   })
     .populate("roles", "-__v")
-    .then((user) => {
+    .exec((err, user) => {
+      if (err) {
+        res.status(500).send({ message: err });
+        return;
+      }
 
       if (!user) {
         return res.status(404).send({ message: "User Not found." });
@@ -102,9 +109,7 @@ const signin = async (req, res) => {
         roles: authorities,
         accessToken: token
       });
-    }).catch((err) => {
-      res.send({ message: err.message });
-    })
+    });
 };
 
 module.exports = {
