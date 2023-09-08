@@ -25,10 +25,10 @@ checkDuplicateUsernameOrEmail = (req, res, next) => {
 
       next();
     }).catch((err) => {
-      res.send({ message: err.message });
+      res.status(err.status).send({ message: err.message });
     })
   }).catch((err) => {
-    res.send({ message: err.message });
+    res.status(err.status).send({ message: err.message });
   })
 };
 

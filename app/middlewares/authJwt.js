@@ -49,7 +49,7 @@ isAdmin = (req, res, next) => {
       }
     );
   }).catch((err) => {
-    res.send({ message: err.message });
+    res.status(err.status).send({ message: err.message });
   })
 };
 
@@ -78,7 +78,7 @@ isModerator = (req, res, next) => {
       }
     );
   }).catch((err) => {
-    res.send({ message: err.message });
+    res.status(err.status).send({ message: err.message });
   })
 };
 
