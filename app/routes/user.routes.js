@@ -28,4 +28,4 @@ const app = require("express").Router();
     controller.adminBoard
   );
 
-  module.exports = {app};
+  module.exports = {app: app};
