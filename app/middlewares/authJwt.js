@@ -25,11 +25,7 @@ verifyToken = (req, res, next) => {
 };
 
 isAdmin = (req, res, next) => {
-  User.findById(req.userId).exec((err, user) => {
-    if (err) {
-      res.status(500).send({ message: err });
-      return;
-    }
+  User.findById(req.userId).then((user) => {
 
     Role.find(
       {
@@ -52,15 +48,13 @@ isAdmin = (req, res, next) => {
         return;
       }
     );
-  });
+  }).catch((err) => {
+    res.status(err.status).send({ message: err.message });
+  })
 };
 
 isModerator = (req, res, next) => {
-  User.findById(req.userId).exec((err, user) => {
-    if (err) {
-      res.status(500).send({ message: err });
-      return;
-    }
+  User.findById(req.userId).then((user) => {
 
     Role.find(
       {
@@ -83,7 +77,9 @@ isModerator = (req, res, next) => {
         return;
       }
     );
-  });
+  }).catch((err) => {
+    res.status(err.status).send({ message: err.message });
+  })
 };
 
 const authJwt = {

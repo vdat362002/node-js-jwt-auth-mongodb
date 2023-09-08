@@ -51,7 +51,8 @@ app.use('/api', userRoutes);
 
 
 function initial() {
-  Role.estimatedDocumentCount((err, count) => {
+  Role.estimatedDocumentCount(
+    (err, count) => {
     if (!err && count === 0) {
       new Role({
         name: "user"
@@ -83,7 +84,8 @@ function initial() {
         console.log("added 'admin' to roles collection");
       });
     }
-  });
+  }                                                 
+  );
 }
 
 module.exports = app;

@@ -41,11 +41,7 @@ const signup = async (req, res) => {
         }
       );
     } else {
-      await Role.findOne({ name: "user" }).exec( async (err, role) => {
-        if (err) {
-          res.status(500).send({ message: err });
-          return;
-        }
+      await Role.findOne({ name: "user" }).then( async (role) => {
 
         user.roles = [role._id];
         await user.save(err => {
@@ -56,7 +52,9 @@ const signup = async (req, res) => {
 
           res.send({ message: "User was registered successfully!" });
         });
-      });
+      }).catch(function (err) {
+        res.status(500).send({ message: err});
+      })
     }
   });
 };
@@ -66,11 +64,7 @@ const signin = async (req, res) => {
     username: req.body.username
   })
     .populate("roles", "-__v")
-    .exec((err, user) => {
-      if (err) {
-        res.status(500).send({ message: err });
-        return;
-      }
+    .then((user) => {
 
       if (!user) {
         return res.status(404).send({ message: "User Not found." });
@@ -108,7 +102,9 @@ const signin = async (req, res) => {
         roles: authorities,
         accessToken: token
       });
-    });
+    }).catch((err) => {
+      res.status(err.status).send({ message: err.message });
+    })
 };
 
 module.exports = {
