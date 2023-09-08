@@ -6,32 +6,32 @@ const Role = db.role;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
-exports.signup = (req, res) => {
+const signup = async (req, res) => {
   const user = new User({
     username: req.body.username,
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8)
   });
 
-  user.save((err, user) => {
+  await user.save(async (err, user) => {
     if (err) {
       res.status(500).send({ message: err });
       return;
     }
 
     if (req.body.roles) {
-      Role.find(
+      await Role.find(
         {
           name: { $in: req.body.roles }
         },
-        (err, roles) => {
+        async (err, roles) => {
           if (err) {
             res.status(500).send({ message: err });
             return;
           }
 
           user.roles = roles.map(role => role._id);
-          user.save(err => {
+          await user.save(err => {
             if (err) {
               res.status(500).send({ message: err });
               return;
@@ -42,14 +42,14 @@ exports.signup = (req, res) => {
         }
       );
     } else {
-      Role.findOne({ name: "user" }, (err, role) => {
+      await Role.findOne({ name: "user" }, async (err, role) => {
         if (err) {
           res.status(500).send({ message: err });
           return;
         }
 
         user.roles = [role._id];
-        user.save(err => {
+        await user.save(err => {
           if (err) {
             res.status(500).send({ message: err });
             return;
@@ -62,8 +62,8 @@ exports.signup = (req, res) => {
   });
 };
 
-exports.signin = (req, res) => {
-  User.findOne({
+const signin = async (req, res) => {
+  await User.findOne({
     username: req.body.username
   })
     .populate("roles", "-__v")
@@ -111,3 +111,8 @@ exports.signin = (req, res) => {
       });
     });
 };
+
+module.exports = {
+  signin,
+  signup
+}
