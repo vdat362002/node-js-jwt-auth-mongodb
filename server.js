@@ -46,8 +46,8 @@ app.get("/", (req, res) => {
 });
 
 // routes
-app.use('/api', authRoutes);
-app.use('/api', userRoutes);
+app.use("/api", authRoutes);
+app.use("/api", userRoutes);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
