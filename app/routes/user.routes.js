@@ -4,10 +4,7 @@ const controller = require("../controllers/user.controller");
 const app = require("express").Router();
 
   app.use(function(req, res, next) {
-    res.header(
-      "Access-Control-Allow-Headers",
-      "x-access-token, Origin, Content-Type, Accept"
-    );
+    res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
     next();
   });
 
