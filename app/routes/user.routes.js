@@ -4,7 +4,9 @@ const controller = require("../controllers/user.controller");
 const app = require("express").Router();
 
   app.use(function(req, res, next) {
-    res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
+    res.setHeader('Vercel-CDN-Cache-Control', 'max-age=3600');
+    res.setHeader('CDN-Cache-Control', 'max-age=60');
+    res.setHeader('Cache-Control', 'max-age=10');
     next();
   });
 
