@@ -103,7 +103,7 @@ const signin = async (req, res) => {
         accessToken: token
       });
     }).catch((err) => {
-      res.status(err.status).send({ message: err.message });
+      res.send({ message: err.message });
     })
 };
 
