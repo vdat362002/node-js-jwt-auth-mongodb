@@ -1,7 +1,6 @@
 const config = require("../config/auth.config");
 const db = require("../models");
-const User = db.user;
-const Role = db.role;
+const {user: User, role: Role} = db
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
@@ -13,11 +12,15 @@ const signup = async (req, res) => {
     password: bcrypt.hashSync(req.body.password, 8)
   });
 
+  console.log(req.body)
+
   await user.save(async (err, user) => {
     if (err) {
       res.status(500).send({ message: err });
       return;
     }
+
+    console.log(user)
 
     if (req.body.roles) {
       await Role.find(
@@ -63,6 +66,7 @@ const signup = async (req, res) => {
 };
 
 const signin = async (req, res) => {
+  console.log(req.body)
   await User.findOne({
     username: req.body.username
   })
@@ -72,6 +76,8 @@ const signin = async (req, res) => {
         res.status(500).send({ message: err });
         return;
       }
+
+      console.log(user)
 
       if (!user) {
         return res.status(404).send({ message: "User Not found." });
