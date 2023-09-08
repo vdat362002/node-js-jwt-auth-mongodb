@@ -7,6 +7,8 @@ const userRoutes = require('./routes/user.routes');
 
 const mongo_db = dbConfig.MONGO_URI;
 
+console.log(mongo_db);
+
 const app = express();
 
 var corsOptions = {
