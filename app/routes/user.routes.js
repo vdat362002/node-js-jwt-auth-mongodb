@@ -3,7 +3,6 @@ const controller = require("../controllers/user.controller");
 
 const app = require("express").Router();
 
-module.exports = function() {
   // app.use(function(req, res, next) {
   //   res.header(
   //     "Access-Control-Allow-Headers",
@@ -27,4 +26,5 @@ module.exports = function() {
     [authJwt.verifyToken, authJwt.isAdmin],
     controller.adminBoard
   );
-};
+
+  module.exports = app;
