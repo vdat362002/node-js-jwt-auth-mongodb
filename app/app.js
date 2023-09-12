@@ -12,7 +12,7 @@ console.log(mongo_db);
 const app = express();
 
 var corsOptions = {
-  origin: "https://server-jwt-login.vercel.app",
+  origin: "https://client-server-jwt.onrender.com",
   credentials: true,
 };
 
